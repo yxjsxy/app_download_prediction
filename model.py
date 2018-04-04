@@ -14,13 +14,18 @@ data = pd.read_csv('/Users/xiujiayang/PycharmProjects/DP_compression/train_sampl
 data.head()
 data.info()
 data.describe()
+import matplotlib.pyplot as plt
+data.hist(bins=50)
+plt.show()
+corr_matrix = data.corr()
+corr_matrix['is_attributed'].sort_values(ascending=False)
 '''
 
-# Feature engineering
+# Data preprocessing and Feature engineering
 data.drop(labels=['attributed_time'], inplace=True, axis=1)
 data['_time'] = data['click_time'].str.slice(11,)
 data['shijian'] = data['_time'].str.slice(0, 2).astype('int')*3600 + data['_time'].str.slice(3, 5).astype('int')*60 + \
-                  data['_time'].str.slice(6,).astype('int')
+                  data['_time'].str.slice(6,).astype('int') 
 data['click_time'] = data['click_time'].str.slice(0, 11)
 leader_code = LabelEncoder()
 data_cat = leader_code.fit_transform(data['click_time'])
